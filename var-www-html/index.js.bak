@@ -1,0 +1,24 @@
+// read express
+const express = require('express');
+
+// express create app
+const app = express();
+
+// open web folder
+app.use(express.static('web'));
+
+// root access to http://localhost/
+app.get('/api', (req, res) => {
+    // JSON DATA
+    const todoList = [
+        { title: 'Ch.1', done: true },
+        { title: 'Ch.2', done: false },
+        { title: 'Ch.3', done: false }
+    ];
+
+    // send JSON
+    res.json(todoList);
+});
+
+// port 3000
+app.listen(3000, () => console.log('Listening on port 3000'));
