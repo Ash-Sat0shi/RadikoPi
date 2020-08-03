@@ -1,0 +1,29 @@
+const request = require('sync-request');
+
+var response = request('get', 'http://radiko.jp/v2/station/list/JP13.xml');
+
+//console.log(response.getBody().toString());   //とってきたXMLがTEXTとして表示される
+var text = response.getBody().toString();
+
+//var xmlArray = text.split(/\r\n|\r|\n/);        //console.log(xmlArray); //配列になったXMLが表示される
+
+var chidtag = text.match(/(?:\<id\>)(.*)(?:\<\/id\>)/g); //"<id>なんちゃら</id>"を配列としてとる。?:をつけておくと配列に格納されないらしい？
+var chnametag = text.match(/(?:\<name\>)(.*)(?:\<\/name\>)/g);
+
+//console.log( result ); //配列をそのまま表示
+    //配列を1要素ずつ表示
+    //for (var i=0; i<result.length;i++){
+    //  console.log( result[i]);
+    //};
+
+//<id>と</id>を切り取り
+var chlist = [];
+var chname = [];
+for (var i=0; i<chidtag.length;i++){
+    //console.log( result[i].slice( 4, -5 ));
+    chlist.push(chidtag[i].slice( 4, -5 ));
+    chname.push(chnametag[i].slice( 6, -7));
+}
+
+console.log( chlist );
+console.log( chname );

@@ -3,9 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 
-const request = require('request');
-
-var URL = 'http://radiko.jp/v2/station/list/JP13.xml';
+const request = require('sync-request');
 
 // express create app
 const app = express();
@@ -15,29 +13,12 @@ app.use(express.static('web'));
 // JSON DATA
 const todoList = [];
 
-//function getchlist() {
-//    
-//    request('http://radiko.jp/v2/station/list/JP13.xml', (error, response, body) => {
-//        // エラーチェック
-//        if( error !== null ){
-//            console.error('error:', error);
-//            return(false);
-//        }
-//        // レスポンスコードとHTMLを表示
-//        console.log('statusCode:', response && response.statusCode);
-//        console.log('body:', body);
-//    });  
-//};
-
-
-
-
 // root access to http://localhost/
 app.get('/api', (req, res) => {
     // send JSON
     res.json(todoList);
 });
-
+/*
 app.get('/api/ch', (req, res) => {
     const chList = [
     { chname: 'TBSラジオ', chid: 'TBS'},
@@ -58,9 +39,35 @@ app.get('/api/ch', (req, res) => {
     ];
     res.json(chList);
 });
+*/
+app.get('/api/ch', (req, res) => {
+var URL = request('get', 'http://radiko.jp/v2/station/list/JP13.xml');
+var text = URL.getBody().toString();
+var chidtag = text.match(/\<id\>(.*)\<\/id\>/g);
+var chnametag = text.match(/\<name\>(.*)\<\/name\>/g);
+var chlist = [];
+var chlistelem = {};
+var chnamelist = [];
+var chidlist = [];
+for (var i = 0; i < chidtag.length; i++) {
+    //console.log( result[i].slice( 4, -5 ));
+    chidlist.push(chidtag[i].slice(4, -5));
+    chnamelist.push(chnametag[i].slice(6, -7));
+    //console.log(chidlist[i]);
+    //console.log(chnamelist[i]);
 
-
-
+    //これだと追加できない…
+    //chlistelem[i].chname = chnamelist[i];
+    //chlistelem[i].chid = chidlist[i];
+    chlistelem[i] = {
+        chname: `${chnamelist[i]}`,
+        chid: `${chidlist[i]}`
+    };
+    console.log(chlistelem[i]);
+    chlist.push(chlistelem[i]);
+}
+    res.json(chlist);
+});
 
 
 app.post('/api/add', (req, res) => {
