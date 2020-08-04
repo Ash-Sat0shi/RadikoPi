@@ -4,13 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome to Radiberry Pi!!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
     <style>
         html {
             background-color: lightgray;
             margin: 2.5vh 5vw;
+            font-family: 'Kosugi Maru', sans-serif;
         }
+
         body {
             /* text-align: center; */
+        }
+
+        button {
+            display: inline-block;
+            padding: 7px 20px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            color: #FFF;
+            background-image: linear-gradient(45deg, #FFC107 0%, #ff8b5f 100%);
+            transition: .4s;
+        }
+        
+        button:hover{
+            border: none;
+            background-image: linear-gradient(45deg, #FFC107 0%, #f76a35 100%);
         }
 
     </style>
@@ -41,7 +60,7 @@
         function renderTodoList(todoList) {
             // id todo-container要素を取得
             const todoContainer = document.querySelector('#todo-container');
-            
+
             //コンテナ内全削除
             const deleteButtonList = todoContainer.querySelectorAll('.delete-button');
             deleteButtonList.forEach((button) => button.removeEventListener('click', deleteButtonListener));
@@ -117,8 +136,8 @@
         fetchTodoList();
 
     </script>
-    
-<!-- ------------------------------------------------------- -->
+
+    <!-- ------------------------------------------------------- -->
     <h3>らじこ　千葉のチャンネルリスト</h3>
     <div>
         <table id="ch-list-container"></table>
@@ -135,16 +154,16 @@
                 chlistContainer.innerHTML = '';
 
                 // JSONの各要素に対して
-                for(const item of chList) {
-                    const tr = document.createElement('tr');            // リスト要素
-                    const label = document.createElement('label');      // ラベル
-                    const chname = new Text(item.chname);               // CH名
-                    const chid = new Text(item.chid);                   // CHのID
+                for (const item of chList) {
+                    const tr = document.createElement('tr'); // リスト要素
+                    const label = document.createElement('label'); // ラベル
+                    const chname = new Text(item.chname); // CH名
+                    const chid = new Text(item.chid); // CHのID
                     const PlayButton = document.createElement('button'); // PLAYボタン
                     PlayButton.innerText = 'PLAY!!';
                     PlayButton.classList.add('play-button');
                     PlayButton.dataset.id = item.chid;
-                    //PlayButton.addEventListener('click', playButtonListener);
+                    PlayButton.addEventListener('click', playButtonListener);
                     //const th = document.createElement('th');
                     const td1 = document.createElement('td');
                     const td2 = document.createElement('td');
@@ -154,7 +173,7 @@
                     //label.appendChild(chname);
                     //label.appendChild(chid);
                     //label.appendChild(PlayButton);
-                                        
+
                     // リスト要素に先ほどのラベルを追加する
                     //tr.appendChild(label);
                     td1.appendChild(chname);
@@ -168,10 +187,18 @@
                 }
             })
         
+        function playButtonListener(event) {
+            const playbutton = event.currentTarget;
+            const id = playbutton.dataset.id;
+
+            // POSTメソッドでAPIにアクセス
+            fetch(`./api/ch/play/${id}`, { method: 'POST' });
+        };
         
+            
     </script>
-    
-    
+
+
 </body>
 
 </html>

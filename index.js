@@ -2,16 +2,23 @@
 const express = require('express');
 const multer = require('multer');
 const uuidv4 = require('uuid/v4');
-
+// for get ch.list from radiko API
 const request = require('sync-request');
+const { execSync } = require('child_process');
 
-// express create app
+
+// express -> app
 const app = express();
 app.use(multer().none());
 // open web folder
 app.use(express.static('web'));
 // JSON DATA
 const todoList = [];
+const list = [];
+
+var chlistelem = {};
+var chnamelist = [];
+var chidlist = [];
 
 // root access to http://localhost/
 app.get('/api', (req, res) => {
@@ -40,15 +47,16 @@ app.get('/api/ch', (req, res) => {
     res.json(chList);
 });
 */
+
+//reqtest.js　で試した千葉県のラジオ局リストとってくるスクリプト
+
 app.get('/api/ch', (req, res) => {
+    var chlist = [];
 var URL = request('get', 'http://radiko.jp/v2/station/list/JP13.xml');
 var text = URL.getBody().toString();
 var chidtag = text.match(/\<id\>(.*)\<\/id\>/g);
 var chnametag = text.match(/\<name\>(.*)\<\/name\>/g);
-var chlist = [];
-var chlistelem = {};
-var chnamelist = [];
-var chidlist = [];
+
 for (var i = 0; i < chidtag.length; i++) {
     //console.log( result[i].slice( 4, -5 ));
     chidlist.push(chidtag[i].slice(4, -5));
@@ -109,5 +117,16 @@ app.delete('/api/item/:id', (req, res) => {
     res.sendStatus(200);
 });
 
+//-------------------------------------------------------------------------//
+
+app.post('/api/ch/play/:id', (req, res) => {
+    // URLの:idと同じIDを持つ項目を検索
+    console.log(`sudo /home/pi/tools/radiko -p ${req.params.id}`);
+    res.sendStatus(200);
+    execSync(`sudo /home/pi/tools/radiko -p ${req.params.id}`);
+    
+});
+
+
 // port 3000
-app.listen(3000, () => console.log('Listening on port 3000'));
+app.listen(3000, () => console.log("listening PORT3000 ..."));
