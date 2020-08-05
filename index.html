@@ -26,11 +26,25 @@
             background-image: linear-gradient(45deg, #FFC107 0%, #ff8b5f 100%);
             transition: .4s;
         }
-        
-        button:hover{
+
+        button:hover {
             border: none;
             background-image: linear-gradient(45deg, #FFC107 0%, #f76a35 100%);
         }
+
+        table {
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            width: 650px;
+            box-shadow: 0 0 15px -6px #00000073;
+        }
+
+        table tr:nth-child(even) td {
+            background: silver;
+        }
+
+
 
     </style>
 </head>
@@ -38,6 +52,8 @@
 <body>
     <h1>Welcome to Radiberry Pi !!</h1>
     <h2>To Put on a Radio, plz click below :D</h2>
+    <p>To access to remote desktop　→<a href="http://radiberrypi.local:6080/vnc.html?host=radiberrypi.local&port=6080" target="_blank"><button> noVNC </button></a><br/>Password : shinshuradio</p>
+    <!--
     <div>
         <ul id="todo-container"></ul>
         <input id="new-todo-item-title"><button id="new-todo-item-add-button">Add</button>
@@ -136,12 +152,14 @@
         fetchTodoList();
 
     </script>
+    -->
 
     <!-- ------------------------------------------------------- -->
     <h3>らじこ　千葉のチャンネルリスト</h3>
     <div>
-        <table id="ch-list-container"></table>
-        <button id="reflesh-button">Refresh CH. List!</button>
+        <table id="ch-list-container" border="0"></table>
+        <br/><br/>
+        <button id="kill-button-container"> STOP Playing</button>
     </div>
     <script>
         fetch('./api/ch')
@@ -149,6 +167,7 @@
             .then((chList) => {
                 // id="todo-container"要素を取得する
                 const chlistContainer = document.querySelector('#ch-list-container');
+                
 
                 // コンテナの中身を全部消す
                 chlistContainer.innerHTML = '';
@@ -185,17 +204,28 @@
                     // TODOリストにリスト要素を追加する
                     chlistContainer.appendChild(tr);
                 }
+
             })
-        
+
         function playButtonListener(event) {
             const playbutton = event.currentTarget;
             const id = playbutton.dataset.id;
 
             // POSTメソッドでAPIにアクセス
-            fetch(`./api/ch/play/${id}`, { method: 'POST' });
+            fetch(`./api/ch/play/${id}`, {
+                method: 'POST'
+            });
+            
         };
         
-            
+        const killButtonContainer = document.querySelector('#kill-button-container');
+        killButtonContainer.addEventListener('click', (event) =>{
+            fetch(`./api/ch/kill`,{
+                method: 'POST'
+            });
+        });
+        
+        
     </script>
 
 

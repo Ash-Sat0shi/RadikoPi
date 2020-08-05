@@ -4,7 +4,7 @@ const multer = require('multer');
 const uuidv4 = require('uuid/v4');
 // for get ch.list from radiko API
 const request = require('sync-request');
-const { execSync } = require('child_process');
+const { exec } = require('child_process');
 
 
 // express -> app
@@ -77,7 +77,7 @@ for (var i = 0; i < chidtag.length; i++) {
     res.json(chlist);
 });
 
-
+/*
 app.post('/api/add', (req, res) => {
     // get data from client
     const todoData = req.body;
@@ -116,14 +116,22 @@ app.delete('/api/item/:id', (req, res) => {
     // ステータスコード200:OKを送信
     res.sendStatus(200);
 });
-
+*/
 //-------------------------------------------------------------------------//
 
 app.post('/api/ch/play/:id', (req, res) => {
     // URLの:idと同じIDを持つ項目を検索
-    console.log(`sudo /home/pi/tools/radiko -p ${req.params.id}`);
+    console.log(`/home/pi/tools/radiko -p ${req.params.id}`);
     res.sendStatus(200);
-    execSync(`sudo /home/pi/tools/radiko -p ${req.params.id}`);
+    exec(`/home/pi/tools/radiko -p ${req.params.id} &`);
+    
+});
+
+app.post('/api/ch/kill', (req, res) => {
+    // URLの:idと同じIDを持つ項目を検索
+    console.log("killall mplayer");
+    res.sendStatus(200);
+    exec(`killall mplayer &`);
     
 });
 
