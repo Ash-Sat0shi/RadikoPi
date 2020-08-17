@@ -77,53 +77,15 @@ for (var i = 0; i < chidtag.length; i++) {
     res.json(chlist);
 });
 
-/*
-app.post('/api/add', (req, res) => {
-    // get data from client
-    const todoData = req.body;
-    const todoTitle = todoData.title;
-
-    // unique ID
-    const id = uuidv4();
-
-    // create TODO element
-    const todoItem = {
-        id,
-        title: todoTitle,
-        done: false
-    };
-
-    // add TODO List
-    todoList.push(todoItem);
-
-    // consolelog
-    console.log('Add: ' + JSON.stringify(todoItem));
-
-    // give back to client
-    res.json(todoItem);
-});
-
-app.delete('/api/item/:id', (req, res) => {
-    // URLの:idと同じIDを持つ項目を検索
-    const index = todoList.findIndex((item) => item.id === req.params.id);
-
-    // 項目が見つかった場合
-    if (index >= 0) {
-        const deleted = todoList.splice(index, 1); // indexの位置にある項目を削除
-        console.log('Delete: ' + JSON.stringify(deleted[0]));
-    }
-
-    // ステータスコード200:OKを送信
-    res.sendStatus(200);
-});
-*/
 //-------------------------------------------------------------------------//
 
 app.post('/api/ch/play/:id', (req, res) => {
     // URLの:idと同じIDを持つ項目を検索
     console.log(`/home/pi/tools/radiko -p ${req.params.id}`);
+    
+    exec(`killall mplayer`)
     res.sendStatus(200);
-    exec(`/home/pi/tools/radiko -p ${req.params.id} &`);
+    exec(`/home/pi/tools/radiko -p ${req.params.id}`);
     
 });
 
