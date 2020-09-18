@@ -6,7 +6,6 @@ const uuidv4 = require('uuid/v4');
 const request = require('sync-request');
 const { exec } = require('child_process');
 
-
 // express -> app
 const app = express();
 app.use(multer().none());
@@ -29,7 +28,7 @@ app.get('/api', (req, res) => {
 app.get('/api/ch', (req, res) => {
     const chList = [
     { chname: 'TBSラジオ', chid: 'TBS'},
-    { chname: '文化放送', chid: 'QRR'}, 
+    { chname: '文化放送', chid: 'QRR'},
     { chname: 'ニッポン放送', chid: 'LFR'},
     { chname: 'ラジオNIKKEI第1', chid: 'RN1'},
     { chname: 'ラジオNIKKEI第2', chid: 'RN2'},
@@ -85,7 +84,12 @@ app.post('/api/ch/play/:id', (req, res) => {
     
     exec(`killall mplayer`)
     res.sendStatus(200);
-    exec(`/home/pi/tools/radiko -p ${req.params.id}`);
+	// exec(`/home/pi/tools/radiko -p ${req.params.id} &`,{ maxBuffer: 20000 * 1024 }, (error, stdout, stderr)
+    exec(`/home/pi/tools/radiko -p ${req.params.id} &`,{ maxBuffer: 20000 * 1024 }, (error, stderr) => {
+	if(error) return console.error('ERROR', error);
+	console.log('ERROR', error);
+	console.log('STDERR', stderr);
+});
     
 });
 
