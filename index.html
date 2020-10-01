@@ -11,13 +11,15 @@
         html {
             width: 100%;
             height: 100%;
-            background: linear-gradient(-135deg, #E4A972, #9941D8) no-repeat;
+            background: linear-gradient(135deg, rgba(228,169,114,0.99), rgba(153,65,216,0.8)) repeat, url(./coffee.jpg) no-repeat;
+            background-size: cover;
+            /* #E4A972, #9941D8 */
             -webkit-overflow-scrolling: touch;
-            overflow-scrolling: touch;
-            
+            overflow-scrolling: touch;            
         }
         body {
-            overflow:hidden;
+            overflow-y:scroll;
+            overflow-x:hidden;
             width: 100%;
             height: 100%;
             margin: 2.5vh 5vw;
@@ -36,6 +38,10 @@
             background-image: linear-gradient(45deg, #FFC107 0%, #ff8b5f 100%);
             transition: .4s;
              filter: drop-shadow(0 0 2px lightgray);
+        }
+        button.remote{
+            font-weight: 800;
+            font-size: 1.5em;
         }
 
         button:hover {
@@ -78,6 +84,11 @@
             grid-column: 1;
             z-index: 0;
         }
+        #bottom {
+            grid-row: 2;
+            grid-column: 1;
+            z-index: 0;
+        }
         
 /*--CSS for Audio bar------------------------------------------------------------------------*/
 .sound-icon {
@@ -85,7 +96,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 .sound-wave {
   width: 200vw;
   height: auto;
@@ -102,7 +112,6 @@
   animation: sound 0ms -800ms linear infinite alternate;
   transition: height 1.6s;
 }
-
 @keyframes sound {
   0% {
     height: 2vh;
@@ -110,108 +119,87 @@
   100% {
     height: 15vh;
   }
-}
-        
+}      
 .bar:nth-child(1) {
   height: 2%;
   animation-duration: 674ms;
 }
-
 .bar:nth-child(2) {
   height: 10%;
   animation-duration: 833ms;
 }
-
 .bar:nth-child(3) {
   height: 180%;
   animation-duration: 707ms;
 }
-
 .bar:nth-child(4) {
   height: 26%;
   animation-duration: 532ms;
 }
-
 .bar:nth-child(5) {
   height: 30%;
   animation-duration: 400ms;
 }
-
 .bar:nth-child(6) {
   height: 32%;
   animation-duration: 827ms;
 }
-
 .bar:nth-child(7) {
   height: 34%;
   animation-duration: 841ms;
 }
-
 .bar:nth-child(8) {
   height: 36%;
   animation-duration: 619ms;
 }
-
 .bar:nth-child(9) {
   height: 40%;
   animation-duration: 776ms;
 }
-
 .bar:nth-child(10) {
   height: 46%;
   animation-duration: 442ms;
 }
-
 .bar:nth-child(11) {
   height: 2%;
   animation-duration: 674ms;
 }
-
 .bar:nth-child(12) {
   height: 10%;
   animation-duration: 433ms;
 }
-
 .bar:nth-child(13) {
   height: 18%;
   animation-duration: 407ms;
 }
-
 .bar:nth-child(14) {
   height: 26%;
   animation-duration: 458ms;
 }
-
 .bar:nth-child(15) {
   height: 30%;
   animation-duration: 700ms;
 }
-
 .bar:nth-child(16) {
   height: 32%;
   animation-duration: 727ms;
 }
-
 .bar:nth-child(17) {
   height: 34%;
   animation-duration: 641ms;
 }
-
 .bar:nth-child(18) {
   height: 36%;
   animation-duration: 419ms;
 }
-
 .bar:nth-child(19) {
   height: 40%;
   animation-duration: 487ms;
 }
-
 .bar:nth-child(20) {
   height: 46%;
   animation-duration: 442ms;
 }
-
 .sound-icon:hover .bar {
     
 }
@@ -223,10 +211,12 @@
     <div id="container">
         <div id="left">
             <h1>Welcome to Radiberry Pi !!</h1>
-            <h2>To Put on a Radio, plz click below :D</h2>
-            <p>To access to remote desktop　→<a href="http://radiberrypi.local:6080/vnc.html?host=radiberrypi.local&port=6080" target="_blank"><button> noVNC </button></a><br />Password : shinshuradio</p>
+            <h2>ラジオをかけるには、下の表[PLAY]ボタンをクリック！ :D</h2>
+            <p>リモートデスクトップアクセスでYouTubeをかけるにはこちら。<br/>日本語入力に対応しました！入力切替は　[Ctrl]+[スペース]　です　(谷田部)2020/10/1　<br/><br/>
+                <a href="http://radiberrypi.local:6080/vnc.html?host=radiberrypi.local&port=6080" target="_blank"><button class="remote"> -noVNC- リモートデスクトップ </button></a>
+                <p>Password : shinshuradio</p>
 
-            <h3>らじこ　千葉のチャンネルリスト</h3>
+            <h3>Radiko　千葉のチャンネルリスト</h3>
             <div>
                 <table id="ch-list-container" border="0"></table>
                 <br /><br />
@@ -323,6 +313,11 @@
             </div>
              
         </div>
+        
+        <!-- div id="bottom" style="background-color: rgba(255,255,255,0.4); border-radius: 25px;" -->
+        <br/>
+        
+        
     </div>
 </body>
 
